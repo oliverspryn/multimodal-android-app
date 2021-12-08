@@ -1,0 +1,25 @@
+# Always up to date version:
+#  - https://olv.to/gitidea
+#  - https://olv.to/explore-idea
+#
+# Inspired, in part, by:
+#  - https://olv.to/idea-folder
+#  - https://olv.to/idea-ignore
+
+# Discarding
+*.iml
+*.xml
+
+caches
+libraries
+
+# Retaining
+!gradle.xml
+!runConfigurations.xml
+!vcs.xml
+
+!codeStyles/*.xml
+!dictionaries/*.xml
+!fileTemplates/*.*
+!inspectionProfiles/*.xml
+!runConfigurations/*.xml
