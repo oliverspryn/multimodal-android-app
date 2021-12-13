@@ -1,3 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Multimodal</string>
+
+    <string name="view_screen_info">View Screen Information</string>
+    <string name="view_adaptive_layouts">View Adaptive Layouts</string>
+
+    <string name="hinge_position">Foldable Hinge Position:</string>
+    <string name="hinge_position_coordinates" context="Shows the foldable hinge's location with respect to the screen's overall size. e.g.: Top: 0, Bottom: 1920, Left: 540, Right: 540">Top: %1$s, Bottom: %2$s, Left: %3$s, Right: %4$s</string>
+    <string name="hinge_position_size" context="Shows the foldable hinge's vertical or horizontal size, depending on the device's orientation. e.g.: Width: 0, Height: 1920">Width: %1$s, Height: %2$s</string>
+
+    <string name="no_item_selected">No Item Selected :(</string>
+    <string name="selected_item" context="Shows the selected number from the list in the details screen. e.g.: You selected: 42">You selected: %1$s</string>
 </resources>
