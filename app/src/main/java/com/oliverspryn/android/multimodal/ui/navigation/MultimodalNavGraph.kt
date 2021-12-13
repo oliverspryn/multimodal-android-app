@@ -8,9 +8,11 @@ import androidx.navigation.compose.composable
 import com.oliverspryn.android.multimodal.ui.adaptivelayouts.AdaptiveLayoutsRoute
 import com.oliverspryn.android.multimodal.ui.home.HomeRoute
 import com.oliverspryn.android.multimodal.ui.screeninfo.ScreenInfoRoute
+import com.oliverspryn.android.multimodal.utils.screen.ScreenClassifier
 
 @Composable
 fun MultimodalNavGraph(
+    screenClassifier: ScreenClassifier,
     navController: NavHostController,
     modifier: Modifier
 ) {
@@ -27,7 +29,9 @@ fun MultimodalNavGraph(
         }
 
         composable(Destinations.ScreenInfo) {
-            ScreenInfoRoute()
+            ScreenInfoRoute(
+                screenClassifier = screenClassifier
+            )
         }
 
         composable(Destinations.AdaptiveLayouts) {
