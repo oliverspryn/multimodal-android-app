@@ -35,7 +35,9 @@ fun MultimodalNavGraph(
         }
 
         composable(Destinations.AdaptiveLayouts) {
-            AdaptiveLayoutsRoute()
+            AdaptiveLayoutsRoute(
+                screenClassifier = screenClassifier
+            )
         }
     }
 }
