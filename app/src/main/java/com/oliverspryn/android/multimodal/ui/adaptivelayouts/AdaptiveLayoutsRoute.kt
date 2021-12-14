@@ -1,6 +1,5 @@
 package com.oliverspryn.android.multimodal.ui.adaptivelayouts
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,14 +16,26 @@ fun AdaptiveLayoutsRoute(
     adaptiveLayoutsScreenType =
         screenClassifier.toAdaptiveLayoutsScreenType(articleSelected = false)
 
-    Text(text = adaptiveLayoutsScreenType.toString())
-
     when (adaptiveLayoutsScreenType) {
-        AdaptiveLayoutsScreenType.ListOnly -> Unit
-        AdaptiveLayoutsScreenType.DetailOnly -> Unit
-        AdaptiveLayoutsScreenType.ListOneThirdAndDetailTwoThirds -> Unit
-        AdaptiveLayoutsScreenType.ListHalfAndDetailHalf -> Unit
-        AdaptiveLayoutsScreenType.ListDetailStacked -> Unit
+        AdaptiveLayoutsScreenType.ListOnly -> AdaptiveLayoutsListScreen()
+        AdaptiveLayoutsScreenType.DetailOnly -> AdaptiveLayoutsDetailScreen()
+        AdaptiveLayoutsScreenType.ListOneThirdAndDetailTwoThirds -> AdaptiveLayoutsListOneThirdAndDetailTwoThirds()
+
+        AdaptiveLayoutsScreenType.ListHalfAndDetailHalf -> {
+            check(screenClassifier is ScreenClassifier.HalfOpened.BookMode)
+
+            AdaptiveLayoutsListHalfAndDetailHalf(
+                screenClassifier = screenClassifier
+            )
+        }
+
+        AdaptiveLayoutsScreenType.ListDetailStacked -> {
+            check(screenClassifier is ScreenClassifier.HalfOpened.TableTopMode)
+
+            AdaptiveLayoutsStacked(
+                screenClassifier = screenClassifier
+            )
+        }
     }
 }
 
