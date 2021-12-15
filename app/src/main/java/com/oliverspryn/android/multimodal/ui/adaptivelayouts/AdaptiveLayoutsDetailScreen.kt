@@ -16,18 +16,28 @@ import com.oliverspryn.android.multimodal.R
 import com.oliverspryn.android.multimodal.ui.theme.MultimodalTheme
 
 @Composable
-fun AdaptiveLayoutsDetailScreen() {
+fun AdaptiveLayoutsDetailScreen(
+    uiState: AdaptiveLayoutsUiState
+) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .padding(all = 16.dp)
             .fillMaxSize()
     ) {
-        Text(
-            text = stringResource(id = R.string.no_item_selected),
-            color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.titleLarge
-        )
+        if (uiState.numberSelected) {
+            Text(
+                text = stringResource(id = R.string.selected_item, uiState.numberFromList),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.titleLarge
+            )
+        } else {
+            Text(
+                text = stringResource(id = R.string.no_item_selected),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.titleLarge
+            )
+        }
     }
 }
 
@@ -37,6 +47,21 @@ fun AdaptiveLayoutsDetailScreen() {
 @Composable
 fun PreviewAdaptiveLayoutsDetailScreen() {
     MultimodalTheme {
-        AdaptiveLayoutsDetailScreen()
+        AdaptiveLayoutsDetailScreen(
+            uiState = AdaptiveLayoutsUiState()
+        )
+    }
+}
+
+@Preview(name = "Selected Number", showSystemUi = true)
+@Composable
+fun PreviewSelectedNumber() {
+    MultimodalTheme {
+        AdaptiveLayoutsDetailScreen(
+            uiState = AdaptiveLayoutsUiState(
+                numberFromList = 42,
+                numberSelected = true
+            )
+        )
     }
 }

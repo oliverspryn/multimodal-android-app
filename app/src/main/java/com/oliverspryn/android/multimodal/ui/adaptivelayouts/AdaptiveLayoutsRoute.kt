@@ -1,6 +1,9 @@
 package com.oliverspryn.android.multimodal.ui.adaptivelayouts
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -10,22 +13,62 @@ import com.oliverspryn.android.multimodal.utils.screen.WindowSizeClass
 
 @Composable
 fun AdaptiveLayoutsRoute(
+    adaptiveLayoutsViewModel: AdaptiveLayoutsViewModel,
     screenClassifier: ScreenClassifier
+) {
+    val uiState by adaptiveLayoutsViewModel.uiState.collectAsState()
+
+    AdaptiveLayoutsRoute(
+        screenClassifier = screenClassifier,
+        uiState = uiState,
+        onBackPressed = { adaptiveLayoutsViewModel.closeDetails() },
+        onSelectNumber = { selectedNumber -> adaptiveLayoutsViewModel.openDetails(selectedNumber) }
+    )
+}
+
+@Composable
+fun AdaptiveLayoutsRoute(
+    screenClassifier: ScreenClassifier,
+    uiState: AdaptiveLayoutsUiState,
+    onBackPressed: () -> Unit,
+    onSelectNumber: (Int) -> Unit
 ) {
     var adaptiveLayoutsScreenType by rememberSaveable { mutableStateOf(AdaptiveLayoutsScreenType.ListOnly) }
     adaptiveLayoutsScreenType =
-        screenClassifier.toAdaptiveLayoutsScreenType(articleSelected = false)
+        screenClassifier.toAdaptiveLayoutsScreenType(articleSelected = uiState.numberSelected)
+
+    val listState = rememberLazyListState()
 
     when (adaptiveLayoutsScreenType) {
-        AdaptiveLayoutsScreenType.ListOnly -> AdaptiveLayoutsListScreen()
-        AdaptiveLayoutsScreenType.DetailOnly -> AdaptiveLayoutsDetailScreen()
-        AdaptiveLayoutsScreenType.ListOneThirdAndDetailTwoThirds -> AdaptiveLayoutsListOneThirdAndDetailTwoThirds()
+        AdaptiveLayoutsScreenType.ListOnly -> AdaptiveLayoutsListScreen(
+            listState = listState,
+            onSelectNumber = onSelectNumber
+        )
+
+        AdaptiveLayoutsScreenType.DetailOnly -> {
+            AdaptiveLayoutsDetailScreen(
+                uiState = uiState
+            )
+
+            BackHandler {
+                onBackPressed()
+            }
+        }
+
+        AdaptiveLayoutsScreenType.ListOneThirdAndDetailTwoThirds -> AdaptiveLayoutsListOneThirdAndDetailTwoThirds(
+            listState = listState,
+            uiState = uiState,
+            onSelectNumber = onSelectNumber
+        )
 
         AdaptiveLayoutsScreenType.ListHalfAndDetailHalf -> {
             check(screenClassifier is ScreenClassifier.HalfOpened.BookMode)
 
             AdaptiveLayoutsListHalfAndDetailHalf(
-                screenClassifier = screenClassifier
+                listState = listState,
+                screenClassifier = screenClassifier,
+                uiState = uiState,
+                onSelectNumber = onSelectNumber
             )
         }
 
@@ -33,7 +76,10 @@ fun AdaptiveLayoutsRoute(
             check(screenClassifier is ScreenClassifier.HalfOpened.TableTopMode)
 
             AdaptiveLayoutsStacked(
-                screenClassifier = screenClassifier
+                listState = listState,
+                screenClassifier = screenClassifier,
+                uiState = uiState,
+                onSelectNumber = onSelectNumber
             )
         }
     }
